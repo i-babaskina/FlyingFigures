@@ -11,8 +11,8 @@ using System.Windows.Forms;
 using System.Globalization;
 using System.Resources;
 using System.Threading;
-using Newtonsoft.Json;
-using System.Xml.Serialization;
+using log4net;
+using System.Reflection;
 
 namespace Practice
 {
@@ -22,6 +22,7 @@ namespace Practice
         List<Figure> MainFigures = new List<Figure>();
         ResourceManager LocRM = new ResourceManager("Practice.Form1", typeof(Form1).Assembly);
         CultureInfo ci = new CultureInfo("en-EN");
+        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public Form1()
         {
             InitializeComponent();
@@ -45,7 +46,23 @@ namespace Practice
             foreach (Figure f in MainFigures)
             {
                 f.Draw(e.Graphics);
-                f.Move(pbMain.Width, pbMain.Height);
+                try
+                {
+                    f.Move(pbMain.Width, pbMain.Height);
+                }
+                catch (FigureOutOfPictureBoxException ex)
+                {
+                    //timer1.Stop();
+                    //DialogResult result = MessageBox.Show(ex.Message);
+                    //if (result == DialogResult.OK)
+                    //{
+                    //f.BackToPictureBox(pbMain.Width, pbMain.Height);
+                    //timer1.Start();
+                    //}
+                    log.Info("Figure " + f.Id + " is out of pb at" + DateTime.Now);
+                    f.BackToPictureBox(pbMain.Width, pbMain.Height);
+                    
+                }
             }
         }
 

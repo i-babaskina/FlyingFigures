@@ -14,7 +14,7 @@ namespace Practice
     [XmlInclude(typeof(Triangle))]
     [XmlInclude(typeof(Rectangle))]
     [Serializable]
-    public class Figure : IDrawable, IMovable
+    public abstract class Figure : IDrawable, IMovable
     {
         private int x;
         private int y;
@@ -137,6 +137,17 @@ namespace Practice
         public virtual void Move(int xMax, int yMax)
         {
 
+        }
+
+        public virtual void Validate(int xMax, int yMax)
+        {
+            if (X > xMax || Y > yMax)
+                throw new FigureOutOfPictureBoxException(this);
+        }
+
+        public virtual void BackToPictureBox(int xMax, int yMax)
+        {
+            
         }
 
 

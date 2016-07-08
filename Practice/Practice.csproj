@@ -57,6 +57,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MyRandomLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5e597bcb02d9a831, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\MyRandomLibrary\v4.0_1.0.0.0__5e597bcb02d9a831\MyRandomLibrary.dll</HintPath>
@@ -83,6 +87,7 @@
     <Compile Include="CrossFiguresManager.cs" />
     <Compile Include="CrossFiguresEventArgs.cs" />
     <Compile Include="Figure.cs" />
+    <Compile Include="FigureOutOfPictureBoxException.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

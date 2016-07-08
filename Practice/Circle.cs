@@ -50,6 +50,7 @@ namespace Practice
 
         public override void Move(int xMax, int yMax)
         {
+            Validate(xMax, yMax);
             if (!this.IsMoved) return;
             if (X - Radius < Math.Abs(Dx) || X + Radius > xMax - Math.Abs(Dx))
                 Dx = -Dx;
@@ -59,7 +60,12 @@ namespace Practice
             Y += Dy;
         }
 
-
+        public override void BackToPictureBox(int xMax, int yMax)
+        {
+            if (radius > xMax / 2 || radius > yMax / 2) radius = MyRandom.GetRandomPoint(25, GetMaxRadius(xMax, yMax));
+            X = MyRandom.GetRandomPoint(25, xMax - Radius);
+            Y = MyRandom.GetRandomPoint(25, yMax - Radius);
+        }
 
         private static void DrawCircle(Graphics g, Pen pen,
                               int centerX, int centerY, int radius)
