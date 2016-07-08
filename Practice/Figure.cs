@@ -23,8 +23,6 @@ namespace Practice
         private Color color;
         private int id;
         private bool isMoved = true;
-        private int pastDx;
-        private int pastDy;
 
         [XmlAttribute]
         public int X
@@ -93,18 +91,6 @@ namespace Practice
             set
             {
                 isMoved = value;
-                if (!isMoved)
-                {
-                    pastDx = Dx;
-                    pastDy = Dy;
-                    Dx = 0;
-                    Dy = 0;
-                }
-                if (isMoved)
-                {
-                    Dx = pastDx;
-                    Dy = pastDy;
-                }
             }
         }
 

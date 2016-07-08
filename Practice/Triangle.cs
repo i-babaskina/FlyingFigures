@@ -113,6 +113,7 @@ namespace Practice
 
         public override void Move(int xMax, int yMax)
         {
+            if (!this.IsMoved) return;
             if (B.X <= Math.Abs(Dx) + 1)
             {
                 Dx = -Dx;

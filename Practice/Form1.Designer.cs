@@ -167,7 +167,7 @@
             // 
             // pbMain
             // 
-            this.pbMain.BackColor = System.Drawing.SystemColors.Control;
+            this.pbMain.BackColor = System.Drawing.SystemColors.ControlLightLight;
             resources.ApplyResources(this.pbMain, "pbMain");
             this.pbMain.Name = "pbMain";
             this.pbMain.TabStop = false;

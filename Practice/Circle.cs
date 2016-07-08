@@ -50,6 +50,7 @@ namespace Practice
 
         public override void Move(int xMax, int yMax)
         {
+            if (!this.IsMoved) return;
             if (X - Radius < Math.Abs(Dx) || X + Radius > xMax - Math.Abs(Dx))
                 Dx = -Dx;
             if (Y - Radius < Math.Abs(Dy) || Y + Radius > yMax - Math.Abs(Dy))

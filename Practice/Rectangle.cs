@@ -89,6 +89,7 @@ namespace Practice
 
         public override void Move(int xMax, int yMax)
         {
+            if (!this.IsMoved) return;
             if (Points[0].X <= 0 || Points[1].X >= xMax)
                 Dx = -Dx;
             if (Points[0].Y <= 0 || Points[2].Y >= yMax)

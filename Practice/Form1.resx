@@ -122,31 +122,31 @@
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="openToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>114, 22</value>
   </data>
   <data name="openToolStripMenuItem.Text" xml:space="preserve">
     <value>Open</value>
   </data>
   <data name="binToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>98, 22</value>
   </data>
   <data name="binToolStripMenuItem.Text" xml:space="preserve">
     <value>Bin</value>
   </data>
   <data name="xMLToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>98, 22</value>
   </data>
   <data name="xMLToolStripMenuItem.Text" xml:space="preserve">
     <value>XML</value>
   </data>
   <data name="jsonToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>98, 22</value>
   </data>
   <data name="jsonToolStripMenuItem.Text" xml:space="preserve">
     <value>Json</value>
   </data>
   <data name="saveToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>114, 22</value>
   </data>
   <data name="saveToolStripMenuItem.Text" xml:space="preserve">
     <value>Save As</value>
