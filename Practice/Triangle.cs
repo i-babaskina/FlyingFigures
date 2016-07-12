@@ -17,6 +17,8 @@ namespace Practice
         private Point a;
         private Point b;
         private Point c;
+
+        public Point[] Points = new Point[3];
         [NonSerialized]
         Pen pen;
 
@@ -90,8 +92,8 @@ namespace Practice
         public Triangle(int xMax, int yMax)
         {
             Color = MyRandom.GetRandomColor();
-            Height = MyRandom.GetRandomPoint(25, (int)yMax/2);
-            Width = MyRandom.GetRandomPoint(25, (int)xMax/2);
+            Height = MyRandom.GetRandomPoint(25, 100);
+            Width = MyRandom.GetRandomPoint(25, 100);
             X = MyRandom.GetRandomPoint(Width/2, xMax - Width);
             Y = MyRandom.GetRandomPoint(yMax - Height);
             Dx = MyRandom.GetRandomSpeed();
@@ -102,10 +104,13 @@ namespace Practice
 
         public override void Draw(Graphics g)
         {
-            pen = new Pen(Color);
+            pen = new Pen(Color, 3);
             A = new Point(X, Y);
             B = new Point(X - (Width / 2), Y + Height);
             C = new Point(X + (Width / 2), Y + Height);
+            Points[0] = A;
+            Points[1] = B;
+            Points[2] = C;
             DrawTriangleLine(g, A, B);
             DrawTriangleLine(g, B, C);
             DrawTriangleLine(g, C, A);
@@ -115,7 +120,7 @@ namespace Practice
         {
             Validate(xMax, yMax);
             if (!this.IsMoved) return;
-            if (B.X <= Math.Abs(Dx) + 1)
+            if (B.X <= 0)
             {
                 Dx = -Dx;
             }
@@ -124,7 +129,7 @@ namespace Practice
                 Dx = -Dx;
             }
 
-            if (A.Y <= Math.Abs(Dy) + 1)
+            if (A.Y <= 0)
             {
                 Dy = -Dy;
             }
@@ -133,8 +138,11 @@ namespace Practice
             {
                 Dy = -Dy;
             }
-            X += Dx;
-            Y += Dy;
+            lock (this)
+            {
+                X += Dx;
+                Y += Dy;
+            }
 
         }
 
@@ -154,6 +162,11 @@ namespace Practice
             g.DrawLine(pen, a, b);
         }
 
+        public override void ChangeDirection()
+        {
+            Dx = -Dx;
+            Dy = -Dy;
+        }
 
     }
 }

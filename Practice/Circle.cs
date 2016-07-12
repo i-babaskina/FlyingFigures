@@ -33,7 +33,7 @@ namespace Practice
         public Circle(int xMax, int yMax)
         {
             Color = MyRandom.GetRandomColor();
-            Radius = MyRandom.GetRandomPoint(25, GetMaxRadius(xMax, yMax));
+            Radius = MyRandom.GetRandomPoint(25, 75);
             X = MyRandom.GetRandomPoint(25, xMax - Radius);
             Y = MyRandom.GetRandomPoint(25, yMax - Radius);
             Dx = MyRandom.GetRandomSpeed();
@@ -44,8 +44,11 @@ namespace Practice
         public Circle() { }
         public override void Draw(Graphics g)
         {
-            pen = new Pen(Color);
-            DrawCircle(g, pen, X, Y, Radius);
+            pen = new Pen(Color, 3);
+            lock(this)
+            {
+                DrawCircle(g, pen, X, Y, Radius);
+            }
         }
 
         public override void Move(int xMax, int yMax)
@@ -56,8 +59,17 @@ namespace Practice
                 Dx = -Dx;
             if (Y - Radius < Math.Abs(Dy) || Y + Radius > yMax - Math.Abs(Dy))
                 Dy = -Dy;
-            X += Dx;
-            Y += Dy;
+            lock(this)
+            {
+                X += Dx;
+                Y += Dy;
+            }
+        }
+
+        public override void ChangeDirection()
+        {
+            Dx = -Dx;
+            Dy = -Dy;
         }
 
         public override void BackToPictureBox(int xMax, int yMax)
@@ -70,15 +82,15 @@ namespace Practice
         private static void DrawCircle(Graphics g, Pen pen,
                               int centerX, int centerY, int radius)
         {
-            int x0 = centerX - (int)(radius/2);
-            int y0 = centerY - (int)(radius/2);
+            int x0 = centerX - (int)(radius);
+            int y0 = centerY - (int)(radius);
             int diameter = radius*2;
             g.DrawEllipse(pen, x0, y0, diameter, diameter);
         }
 
         private static int GetMaxRadius(int xMax, int yMax)
         {
-            return (int)(Support.GetMin(xMax, yMax) / 4);
+            return (int)(Support.GetMin(xMax, yMax) / 8);
         }
 
 

@@ -162,5 +162,10 @@ namespace Practice
             throw new NotImplementedException();
         }
 
+        public virtual void ChangeDirection()
+        {
+
+        }
+
     }
 }

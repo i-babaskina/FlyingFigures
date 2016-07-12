@@ -15,6 +15,7 @@ using System.Xml.Serialization;
 
 namespace Practice
 {
+
     class Support
     {
         public static int GetMin(int a, int b)
@@ -80,5 +81,7 @@ namespace Practice
             FileStream fs = new FileStream(fullFileName, FileMode.Create, FileAccess.Write, FileShare.None);
             xmlSerializer.Serialize(fs, figures);
         }
+
+        
     }
 }

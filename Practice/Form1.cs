@@ -13,6 +13,7 @@ using System.Resources;
 using System.Threading;
 using log4net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Practice
 {
@@ -23,9 +24,17 @@ namespace Practice
         ResourceManager LocRM = new ResourceManager("Practice.Form1", typeof(Form1).Assembly);
         CultureInfo ci = new CultureInfo("en-EN");
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        Thread thread;
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
         public Form1()
         {
             InitializeComponent();
+            AllocConsole();
+            Console.WriteLine("cococo");
+            thread = new Thread(MoveFigures);
+            //thread.Start();
 
         }
 
@@ -33,41 +42,49 @@ namespace Practice
         {
             int yMax = pbMain.Height;
             int xMax = pbMain.Width;
-            Circle circle = new Circle(xMax, yMax );
+            Circle circle = new Circle(xMax, yMax);
             circle.Id = MainFigures.Count();
             treeViewMain.Nodes.Add(LocRM.GetString("bCircle", ci) + circle.Id);
-            MainFigures.Add(circle);
+            lock (MainFigures)
+            {
+                MainFigures.Add(circle);
+            }
             pbMain.Invalidate();
-            
+
         }
 
         private void pbMain_Paint(object sender, PaintEventArgs e)
         {
-            foreach (Figure f in MainFigures)
+            //lock (MainFigures)
             {
-                f.Draw(e.Graphics);
-                try
+                foreach (Figure f in MainFigures)
                 {
-                    f.Move(pbMain.Width, pbMain.Height);
-                }
-                catch (FigureOutOfPictureBoxException ex)
-                {
-                    //timer1.Stop();
-                    //DialogResult result = MessageBox.Show(ex.Message);
-                    //if (result == DialogResult.OK)
-                    //{
-                    //f.BackToPictureBox(pbMain.Width, pbMain.Height);
-                    //timer1.Start();
-                    //}
-                    log.Info("Figure " + f.Id + " is out of pb at" + DateTime.Now);
-                    f.BackToPictureBox(pbMain.Width, pbMain.Height);
-                    
+                    f.Draw(e.Graphics);
+                    try
+                    {
+                        f.Move(pbMain.Width, pbMain.Height);
+                    }
+                    catch (FigureOutOfPictureBoxException ex)
+                    {
+                        //timer1.Stop();
+                        //DialogResult result = MessageBox.Show(ex.Message);
+                        //if (result == DialogResult.OK)
+                        //{
+                        //f.BackToPictureBox(pbMain.Width, pbMain.Height);
+                        //timer1.Start();
+                        //}
+                        log.Info("Figure " + f.Id + " is out of pb at" + DateTime.Now);
+                        f.BackToPictureBox(pbMain.Width, pbMain.Height);
+
+                    }
+
                 }
             }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            CrossChecking.CrossFigures(MainFigures, pbMain.Width, pbMain.Height);
             pbMain.Invalidate();
         }
 
@@ -79,6 +96,7 @@ namespace Practice
             var figure = MainFigures[stopFigureIndex];
             figure.IsMoved = !(figure.IsMoved);
             bStop.Text = figure.IsMoved ? LocRM.GetString("bStop", ci) : LocRM.GetString("StartButton", ci);
+            //MessageBox.Show(Figures.Triangle.ToString());
 
         }
 
@@ -89,7 +107,10 @@ namespace Practice
             Triangle triangle = new Triangle(xMax, yMax);
             triangle.Id = MainFigures.Count();
             treeViewMain.Nodes.Add(LocRM.GetString("b" + triangle.GetType().Name, ci) + triangle.Id);
-            MainFigures.Add(triangle);
+            lock (MainFigures)
+            {
+                MainFigures.Add(triangle);
+            }
             pbMain.Invalidate();
 
         }
@@ -101,7 +122,10 @@ namespace Practice
             Rectangle rectangle = new Rectangle(xMax, yMax);
             rectangle.Id = MainFigures.Count();
             treeViewMain.Nodes.Add(LocRM.GetString("b" + rectangle.GetType().Name, ci) + rectangle.Id);
-            MainFigures.Add(rectangle);
+            lock (MainFigures)
+            {
+                MainFigures.Add(rectangle);
+            }
             pbMain.Invalidate();
         }
 
@@ -135,7 +159,7 @@ namespace Practice
         {
             LocalizeTreeView("en-EN");
             ci = new CultureInfo("en-EN");
-            
+
             foreach (Control c in this.Controls)
             {
                 foreach (Control c1 in c.Controls)
@@ -158,16 +182,16 @@ namespace Practice
                 }
             }
 
-            
+
         }
 
         private void LocalizeTreeView(string lang)
         {
             foreach (TreeNode node in treeViewMain.Nodes)
             {
-                    node.Text = node.Text.Replace(LocRM.GetString("bCircle", ci), LocRM.GetString("bCircle", new CultureInfo(lang)));
-                    node.Text = node.Text.Replace(LocRM.GetString("bTriangle", ci), LocRM.GetString("bTriangle", new CultureInfo(lang)));
-                    node.Text = node.Text.Replace(LocRM.GetString("bRectangle", ci), LocRM.GetString("bRectangle", new CultureInfo(lang)));
+                node.Text = node.Text.Replace(LocRM.GetString("bCircle", ci), LocRM.GetString("bCircle", new CultureInfo(lang)));
+                node.Text = node.Text.Replace(LocRM.GetString("bTriangle", ci), LocRM.GetString("bTriangle", new CultureInfo(lang)));
+                node.Text = node.Text.Replace(LocRM.GetString("bRectangle", ci), LocRM.GetString("bRectangle", new CultureInfo(lang)));
             }
             treeViewMain.Update();
         }
@@ -198,6 +222,49 @@ namespace Practice
             {
                 Support.SerializeToXml(MainFigures, sf.FileName);
             }
+        }
+
+        private void MoveFigures()
+        {
+            while (true)
+            {
+                lock (MainFigures)
+                {
+                    foreach (Figure f in MainFigures)
+                    {
+                        //lock (f) 
+                        {
+                            //try
+                            //{
+                            //    f.Move(pbMain.Width, pbMain.Height);
+                            //}
+                            //catch (FigureOutOfPictureBoxException ex)
+                            //{
+                            //    //timer1.Stop();
+                            //    //DialogResult result = MessageBox.Show(ex.Message);
+                            //    //if (result == DialogResult.OK)
+                            //    //{
+                            //    //f.BackToPictureBox(pbMain.Width, pbMain.Height);
+                            //    //timer1.Start();
+                            //    //}
+                            //    log.Info("Figure " + f.Id + " is out of pb at" + DateTime.Now);
+                            //    f.BackToPictureBox(pbMain.Width, pbMain.Height);
+
+                            //}
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            thread.Abort();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MainFigures.Clear();
         }
     }
 }

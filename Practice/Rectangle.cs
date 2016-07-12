@@ -63,8 +63,8 @@ namespace Practice
         {
             Points = new Point[5];
             Color = MyRandom.GetRandomColor();
-            Height = MyRandom.GetRandomPoint(25, yMax / 2);
-            Width = MyRandom.GetRandomPoint(25, xMax / 2);
+            Height = MyRandom.GetRandomPoint(25, 100);
+            Width = MyRandom.GetRandomPoint(25, 100);
             X = MyRandom.GetRandomPoint(0, xMax - Width);
             Y = MyRandom.GetRandomPoint(0, yMax - Height);
             Dx = MyRandom.GetRandomSpeed();
@@ -77,26 +77,37 @@ namespace Practice
 
         public override void Draw(Graphics g)
         {
-            Points = new Point[5];
-            pen = new Pen(Color);
-            Points[0] = new Point(X, Y);
-            Points[1] = new Point(X + Width, Y);
-            Points[2] = new Point(X + Width, Y + Height);
-            Points[3] = new Point(X, Y + Height);
-            Points[4] = Points[0];
-            g.DrawLines(pen, Points);
+            //lock(this)
+            {
+                Points = new Point[5];
+                pen = new Pen(Color, 3);
+                Points[0] = new Point(X, Y);
+                Points[1] = new Point(X + Width, Y);
+                Points[2] = new Point(X + Width, Y + Height);
+                Points[3] = new Point(X, Y + Height);
+                Points[4] = Points[0];
+                lock(this)
+                {
+                    g.DrawLines(pen, Points);
+                }
+            }
         }
 
         public override void Move(int xMax, int yMax)
         {
             Validate(xMax, yMax);
+
             if (!this.IsMoved) return;
+            
             if (Points[0].X <= 0 || Points[1].X >= xMax)
                 Dx = -Dx;
             if (Points[0].Y <= 0 || Points[2].Y >= yMax)
                 Dy = -Dy;
-            X += Dx;
-            Y += Dy;
+            //lock (this)
+            {
+                X += Dx;
+                Y += Dy;
+            }
         }
 
         public override void BackToPictureBox(int xMax, int yMax)
@@ -108,6 +119,12 @@ namespace Practice
             }
             X = MyRandom.GetRandomPoint(0, xMax - Width);
             Y = MyRandom.GetRandomPoint(0, yMax - Height);
+        }
+
+        public override void ChangeDirection()
+        {
+            Dx = -Dx;
+            Dy = -Dy;
         }
 
 

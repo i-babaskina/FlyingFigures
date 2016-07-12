@@ -48,6 +48,7 @@
             this.treeViewMain = new System.Windows.Forms.TreeView();
             this.pbMain = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.panelControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
@@ -124,6 +125,7 @@
             // 
             // panelControls
             // 
+            this.panelControls.Controls.Add(this.button1);
             this.panelControls.Controls.Add(this.bRectangle);
             this.panelControls.Controls.Add(this.bTriangle);
             this.panelControls.Controls.Add(this.bCircle);
@@ -179,6 +181,13 @@
             this.timer1.Interval = 1;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // button1
+            // 
+            resources.ApplyResources(this.button1, "button1");
+            this.button1.Name = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
@@ -189,6 +198,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panelControls.ResumeLayout(false);
@@ -218,6 +228,7 @@
         private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem englishToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem русскийToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
     }
 }
 
