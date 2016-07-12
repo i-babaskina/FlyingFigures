@@ -21,6 +21,7 @@ namespace Practice
     }
     class CrossChecking
     {
+        public static List<Crossing> CrossList = new List<Crossing>();
         public static LineEquation GetLineEquation(Point a, Point b)
         {
             LineEquation le = new LineEquation();
@@ -82,14 +83,14 @@ namespace Practice
             }
             if (res)
             {
-                Console.WriteLine("crossin between figures {0} and {1}  at time: {2}", circle.Id, triangle.Id, DateTime.Now);
+                int isInList = CrossList.FindIndex(x => x.figure1 == circle && x.figure2 == triangle && (x.datetime.Second >= DateTime.Now.Second - 2) && (x.datetime.Minute == DateTime.Now.Minute));
+                if (isInList == -1)
+                {
+                    Crossing crossing = new Crossing(circle, triangle);
+                    CrossList.Add(crossing);
+                    Console.Beep();
+                }
                 
-                circle.ChangeDirection();
-                triangle.ChangeDirection();
-                circle.Move(xMAx, yMax);
-                triangle.Move(xMAx, yMax);
-                circle.Move(xMAx, yMax);
-                triangle.Move(xMAx, yMax);
             }
             return res;
         }
@@ -118,13 +119,13 @@ namespace Practice
             }
             if (res)
             {
-                Console.WriteLine("crossin between figures {0} and {1}  at time: {2}", circle.Id, rectangle.Id, DateTime.Now);
-                circle.ChangeDirection();
-               rectangle.ChangeDirection();
-                circle.Move(xMAx, yMax);
-                rectangle.Move(xMAx, yMax);
-                circle.Move(xMAx, yMax);
-                rectangle.Move(xMAx, yMax);
+                int isInList = CrossList.FindIndex(x => x.figure1 == circle && x.figure2 == rectangle && (x.datetime.Second >= DateTime.Now.Second - 2) && (x.datetime.Minute == DateTime.Now.Minute));
+                if (isInList == -1)
+                {
+                    Crossing crossing = new Crossing(circle, rectangle);
+                    CrossList.Add(crossing);
+                    Console.Beep();
+                }
             }
             return res;
         }
@@ -137,11 +138,13 @@ namespace Practice
                 res = true;
             if (res)
             {
-                Console.WriteLine("crossin between figures {0} and {1} at time: {2}", circle1.Id, circle2.Id, DateTime.Now);
-                circle1.ChangeDirection();
-                circle2.ChangeDirection();
-                circle1.Move(xMAx, yMax);
-                circle2.Move(xMAx, yMax);
+                int isInList = CrossList.FindIndex(x => ( (x.figure1 == circle1  && x.figure2 == circle2) || (x.figure2 == circle1 && x.figure1 == circle2)) && (x.datetime.Second >= DateTime.Now.Second - 1) && (x.datetime.Minute == DateTime.Now.Minute));
+                if (isInList == -1)
+                {
+                    Crossing crossing = new Crossing(circle1, circle2);
+                    CrossList.Add(crossing);
+                    Console.Beep();
+                }
             }
             return res;
         }
@@ -165,15 +168,13 @@ namespace Practice
                         //    res = true;
                         if (IsPointOnLine(l1, p))
                         {
-                            triangle.ChangeDirection();
-                            rectangle.ChangeDirection();
-                            triangle.Move(xMAx, yMax);
-                            rectangle.Move(xMAx, yMax);
-                            triangle.Move(xMAx, yMax);
-                            rectangle.Move(xMAx, yMax);
-                            res = true;
-                            Console.Beep();
-                            Console.WriteLine("!If reclangle in triangle!! crossin between figures {0} and {1}  at time: {2}", triangle.Id, rectangle.Id, DateTime.Now);
+                            int isInList = CrossList.FindIndex(x => x.figure1 == triangle && x.figure2 == rectangle && (x.datetime.Second >= DateTime.Now.Second - 2) && (x.datetime.Minute == DateTime.Now.Minute));
+                            if (isInList == -1)
+                            {
+                                Crossing crossing = new Crossing(triangle, rectangle);
+                                CrossList.Add(crossing);
+                                Console.Beep();
+                            }
                             return res;
                         }
                     }
@@ -181,25 +182,25 @@ namespace Practice
             }
             else
             {
-                triangle.ChangeDirection();
-                rectangle.ChangeDirection();
-                triangle.Move(xMAx, yMax);
-                rectangle.Move(xMAx, yMax);
-                triangle.Move(xMAx, yMax);
-                rectangle.Move(xMAx, yMax);
-                Console.WriteLine("!if triangle in rectangle!! crossin between figures {0} and {1}  at time: {2}", triangle.Id, rectangle.Id, DateTime.Now);
+                int isInList = CrossList.FindIndex(x => x.figure1 == triangle && x.figure2 == rectangle && (x.datetime.Second >= DateTime.Now.Second - 2) && (x.datetime.Minute == DateTime.Now.Minute));
+                if (isInList == -1)
+                {
+                    Crossing crossing = new Crossing(triangle, rectangle);
+                    CrossList.Add(crossing);
+                    Console.Beep();
+                }
                 return true;
             }
             
             if (res)
             {
-                triangle.ChangeDirection();
-                rectangle.ChangeDirection();
-                triangle.Move(xMAx, yMax);
-                rectangle.Move(xMAx, yMax);
-                triangle.Move(xMAx, yMax);
-                rectangle.Move(xMAx, yMax);
-                Console.WriteLine("between figures {0} and {1}  at time: {2}", triangle.Id, rectangle.Id, DateTime.Now);
+                int isInList = CrossList.FindIndex(x => x.figure1 == triangle && x.figure2 == rectangle && (x.datetime.Second >= DateTime.Now.Second - 2) && (x.datetime.Minute == DateTime.Now.Minute));
+                if (isInList == -1)
+                {
+                    Crossing crossing = new Crossing(triangle, rectangle);
+                    CrossList.Add(crossing);
+                    Console.Beep();
+                }
             }
             return res;
         }
@@ -222,13 +223,13 @@ namespace Practice
             }
             if (res)
             {
-                triangle1.ChangeDirection();
-                triangle2.ChangeDirection();
-                triangle1.Move(xMAx, yMax);
-                triangle2.Move(xMAx, yMax);
-                triangle1.Move(xMAx, yMax);
-                triangle2.Move(xMAx, yMax);
-                Console.WriteLine("crossin between figures {0} and {1}  at time: {2}", triangle1.Id, triangle2.Id, DateTime.Now);
+                int isInList = CrossList.FindIndex(x => ((x.figure1 == triangle1 && x.figure2 == triangle2)|| (x.figure2 == triangle1 && x.figure1 == triangle2)) && (x.datetime.Second >= DateTime.Now.Second - 2) && (x.datetime.Minute == DateTime.Now.Minute));
+                if (isInList == -1)
+                {
+                    Crossing crossing = new Crossing(triangle1, triangle2);
+                    CrossList.Add(crossing);
+                    Console.Beep();
+                }
             }
             return res;
         }
@@ -247,13 +248,13 @@ namespace Practice
             var res = IsRectanglesCrossed(rectangle1, rectangle2);
             if (res)
             {
-                rectangle1.ChangeDirection();
-                rectangle2.ChangeDirection();
-                rectangle1.Move(xMAx, yMax);
-                rectangle2.Move(xMAx, yMax);
-                rectangle1.Move(xMAx, yMax);
-                rectangle2.Move(xMAx, yMax);
-                Console.WriteLine("crossin between figures {0} and {1}  at time: {2}", rectangle1.Id, rectangle2.Id, DateTime.Now);
+                int isInList = CrossList.FindIndex(x => ((x.figure1 == rectangle1 && x.figure2 == rectangle2)|| (x.figure2 == rectangle1 && x.figure1 == rectangle2)) && (x.datetime.Second >= DateTime.Now.Second - 2) && (x.datetime.Minute == DateTime.Now.Minute));
+                if (isInList == -1)
+                {
+                    Crossing crossing = new Crossing(rectangle1, rectangle2);
+                    CrossList.Add(crossing);
+                    Console.Beep();
+                }
             }
             return res;
         }

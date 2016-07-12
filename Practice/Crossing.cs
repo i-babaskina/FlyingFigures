@@ -11,5 +11,12 @@ namespace Practice
         public Figure figure1;
         public Figure figure2;
         public DateTime datetime;
+
+        public Crossing(Figure f1, Figure f2)
+        {
+            figure1 = f1;
+            figure2 = f2;
+            datetime = DateTime.Now;
+        }
     }
 }
