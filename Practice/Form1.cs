@@ -42,6 +42,11 @@ namespace Practice
 
         }
 
+        private enum FiguresB
+        {
+            bCircle, bTriangle, bRectangle
+        }
+
         private void bCircle_Click(object sender, EventArgs e)
         {
             int yMax = pbMain.Height;
@@ -210,9 +215,9 @@ namespace Practice
         {
             foreach (TreeNode node in treeViewMain.Nodes)
             {
-                node.Text = node.Text.Replace(LocRM.GetString("bCircle", ci), LocRM.GetString("bCircle", new CultureInfo(lang)));
-                node.Text = node.Text.Replace(LocRM.GetString("bTriangle", ci), LocRM.GetString("bTriangle", new CultureInfo(lang)));
-                node.Text = node.Text.Replace(LocRM.GetString("bRectangle", ci), LocRM.GetString("bRectangle", new CultureInfo(lang)));
+                node.Text = node.Text.Replace(LocRM.GetString(Figures.Circle.ToString(), ci), LocRM.GetString(Figures.Circle.ToString(), new CultureInfo(lang)));
+                node.Text = node.Text.Replace(LocRM.GetString(Figures.Triangle.ToString(), ci), LocRM.GetString(Figures.Triangle.ToString(), new CultureInfo(lang)));
+                node.Text = node.Text.Replace(LocRM.GetString(Figures.Rectangle.ToString(), ci), LocRM.GetString(Figures.Rectangle.ToString(), new CultureInfo(lang)));
             }
             treeViewMain.Update();
         }

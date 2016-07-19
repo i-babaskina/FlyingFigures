@@ -147,20 +147,20 @@
   <data name="StartButton" xml:space="preserve">
     <value>Старт</value>
   </data>
-  <data name="TreeCircle" xml:space="preserve">
-    <value>Круг</value>
-  </data>
-  <data name="TreeRectangle" xml:space="preserve">
-    <value>Прямоугольник</value>
-  </data>
-  <data name="TreeTriangle" xml:space="preserve">
-    <value>Треугольник</value>
-  </data>
   <data name="bClear" xml:space="preserve">
     <value>Очистить</value>
   </data>
+  <data name="Circle" xml:space="preserve">
+    <value>Круг</value>
+  </data>
   <data name="englishToolStripMenuItem" xml:space="preserve">
     <value>Английский</value>
+  </data>
+  <data name="Rectangle" xml:space="preserve">
+    <value>Прямоугольник</value>
+  </data>
+  <data name="Triangle" xml:space="preserve">
+    <value>Треугольник</value>
   </data>
   <data name="русскийToolStripMenuItem" xml:space="preserve">
     <value>Русский</value>
