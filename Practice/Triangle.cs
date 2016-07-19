@@ -130,25 +130,29 @@ namespace Practice
         {
             Validate(xMax, yMax);
             if (!this.IsMoved) return;
-            //lock (locker)
+            lock (locker)
             {
                 if (B.X <= 0)
                 {
                     Dx = -Dx;
+                    X += Dx;
                 }
                 if (C.X >= xMax)
                 {
                     Dx = -Dx;
+                    X += Dx;
                 }
 
                 if (A.Y <= 0)
                 {
                     Dy = -Dy;
+                    Y += Dy;
                 }
 
                 if (B.Y >= yMax)
                 {
                     Dy = -Dy;
+                    Y += Dy;
                 }
 
                 X += Dx;

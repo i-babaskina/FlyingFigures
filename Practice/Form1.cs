@@ -38,7 +38,7 @@ namespace Practice
             log4net.Config.XmlConfigurator.Configure();
             thread = new Thread(MoveFigures);
             
-            //thread.Start();
+            thread.Start();
 
         }
 
@@ -65,25 +65,25 @@ namespace Practice
                 foreach (Figure f in MainFigures)
                 {
                     f.Draw(e.Graphics);
-                    try
-                    {
-                        f.Move(pbMain.Width, pbMain.Height);
-                    }
-                    catch (FigureOutOfPictureBoxException ex)
-                    {
-                        //timer1.Stop();
-                        //DialogResult result = MessageBox.Show(ex.Message);
-                        //if (result == DialogResult.OK)
-                        //{
-                        //f.BackToPictureBox(pbMain.Width, pbMain.Height);
-                        //timer1.Start();
-                        //}
-                        string str = "Figure " + f.Id + " is out of pb at " + DateTime.Now;
-                        log.Info(str);
-                        log.Error("", ex);
-                        f.BackToPictureBox(pbMain.Width, pbMain.Height);
+                    //try
+                    //{
+                    //    f.Move(pbMain.Width, pbMain.Height);
+                    //}
+                    //catch (FigureOutOfPictureBoxException ex)
+                    //{
+                    //    //timer1.Stop();
+                    //    //DialogResult result = MessageBox.Show(ex.Message);
+                    //    //if (result == DialogResult.OK)
+                    //    //{
+                    //    //f.BackToPictureBox(pbMain.Width, pbMain.Height);
+                    //    //timer1.Start();
+                    //    //}
+                    //    string str = "Figure " + f.Id + " is out of pb at " + DateTime.Now;
+                    //    log.Info(str);
+                    //    log.Error("", ex);
+                    //    f.BackToPictureBox(pbMain.Width, pbMain.Height);
 
-                    }
+                    //}
 
                 }
             }
@@ -238,7 +238,7 @@ namespace Practice
         {
             while (true)
             {
-                lock (MainFigures)
+                //lock (MainFigures)
                 {
                     Thread.Sleep(speed);
                     foreach (Figure f in MainFigures.ToArray<Figure>())
@@ -258,8 +258,10 @@ namespace Practice
                                 //    f.BackToPictureBox(pbMain.Width, pbMain.Height);
                                 //    timer1.Start();
                                 //    //}
-                                    log.Info("Figure " + f.Id + " is out of pb at" + DateTime.Now);
-                                    f.BackToPictureBox(pbMain.Width, pbMain.Height);
+                                string str = "Figure " + f.Id + " is out of pb at " + DateTime.Now;
+                                log.Info(str);
+                                log.Error("", ex);
+                                f.BackToPictureBox(pbMain.Width, pbMain.Height);
 
                                 }
                         }

@@ -59,9 +59,10 @@ namespace Practice
 
         public override void Move(int xMax, int yMax)
         {
-            Validate(xMax, yMax);
+            
+                Validate(xMax, yMax);
             if (!this.IsMoved) return;
-            //lock (locker)
+            lock (locker)
             {
                 if (X - Radius <= 0 || X + Radius >= xMax )
                 Dx = -Dx;

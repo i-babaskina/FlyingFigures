@@ -104,12 +104,18 @@ namespace Practice
             Validate(xMax, yMax);
 
             if (!this.IsMoved) return;
-            //lock (locker)
+            lock (locker)
             {
                 if (Points[0].X <= 0 || Points[1].X >= xMax)
-                Dx = -Dx;
-            if (Points[0].Y <= 0 || Points[2].Y >= yMax)
-                Dy = -Dy;
+                {
+                    Dx = -Dx;
+                    X += Dx;
+                }
+                if (Points[0].Y <= 0 || Points[2].Y >= yMax)
+                {
+                    Dy = -Dy;
+                    Y += Dy;
+                }
             
                 X += Dx;
                 Y += Dy;
