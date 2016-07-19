@@ -169,7 +169,13 @@ namespace Practice
             //TODO Исправить замену контролов в меню
             LocalizeTreeView("en-EN");
             ci = new CultureInfo("en-EN");
+            ChangeLocalization();
 
+
+        }
+
+        private void ChangeLocalization()
+        {
             foreach (Control c in this.Controls)
             {
                 foreach (Control c1 in c.Controls)
@@ -178,19 +184,24 @@ namespace Practice
                 }
             }
 
+            foreach (ToolStripDropDownItem item in menuStrip1.Items)
+            {
+                item.Text = LocRM.GetString(item.Name, ci);
+                if (item is ToolStripDropDownItem)
+                {
+                    foreach (ToolStripItem dropDownItem in ((ToolStripDropDownItem)item).DropDownItems)
+                    {
+                        dropDownItem.Text = LocRM.GetString(dropDownItem.Name, ci);
+                    }
+                }
+            }
         }
 
         private void русскийToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LocalizeTreeView("ru-RU");
             ci = new CultureInfo("ru-RU");
-            foreach (Control c in this.Controls)
-            {
-                foreach (Control c1 in c.Controls)
-                {
-                    c1.Text = LocRM.GetString(c1.Name, ci);
-                }
-            }
+            ChangeLocalization();
 
 
         }
@@ -278,6 +289,7 @@ namespace Practice
         private void button1_Click(object sender, EventArgs e)
         {
             MainFigures.Clear();
+            treeViewMain.Nodes.Clear();
         }
 
         public void do_Cross(object sender, CrossFiguresEventArgs e)

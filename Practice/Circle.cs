@@ -50,7 +50,7 @@ namespace Practice
         public Circle() { }
         public override void Draw(Graphics g)
         {
-            pen = new Pen(Color, 3);
+            pen = new Pen(Color, 4);
             //lock(this)
             {
                 DrawCircle(g, pen, X, Y, Radius);

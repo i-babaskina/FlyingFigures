@@ -129,7 +129,7 @@
   <data name="bTriangle" xml:space="preserve">
     <value>Triangle</value>
   </data>
-  <data name="FileMenu" xml:space="preserve">
+  <data name="fileToolStripMenuItem" xml:space="preserve">
     <value>File</value>
   </data>
   <data name="FormName" xml:space="preserve">
@@ -138,10 +138,10 @@
   <data name="languageToolStripMenuItem" xml:space="preserve">
     <value>Language</value>
   </data>
-  <data name="OpenFileMenu" xml:space="preserve">
+  <data name="openToolStripMenuItem" xml:space="preserve">
     <value>Open</value>
   </data>
-  <data name="SaveFileMenu" xml:space="preserve">
+  <data name="saveToolStripMenuItem" xml:space="preserve">
     <value>Save As...</value>
   </data>
   <data name="StartButton" xml:space="preserve">
@@ -155,5 +155,14 @@
   </data>
   <data name="TreeTriangle" xml:space="preserve">
     <value>Triangle</value>
+  </data>
+  <data name="bClear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="englishToolStripMenuItem" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="русскийToolStripMenuItem" xml:space="preserve">
+    <value>Russian</value>
   </data>
 </root>

@@ -41,6 +41,7 @@
             this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.русскийToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelControls = new System.Windows.Forms.Panel();
+            this.bClear = new System.Windows.Forms.Button();
             this.bRectangle = new System.Windows.Forms.Button();
             this.bTriangle = new System.Windows.Forms.Button();
             this.bCircle = new System.Windows.Forms.Button();
@@ -48,7 +49,6 @@
             this.treeViewMain = new System.Windows.Forms.TreeView();
             this.pbMain = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.panelControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
@@ -125,13 +125,20 @@
             // 
             // panelControls
             // 
-            this.panelControls.Controls.Add(this.button1);
+            this.panelControls.Controls.Add(this.bClear);
             this.panelControls.Controls.Add(this.bRectangle);
             this.panelControls.Controls.Add(this.bTriangle);
             this.panelControls.Controls.Add(this.bCircle);
             this.panelControls.Controls.Add(this.bStop);
             resources.ApplyResources(this.panelControls, "panelControls");
             this.panelControls.Name = "panelControls";
+            // 
+            // bClear
+            // 
+            resources.ApplyResources(this.bClear, "bClear");
+            this.bClear.Name = "bClear";
+            this.bClear.UseVisualStyleBackColor = true;
+            this.bClear.Click += new System.EventHandler(this.button1_Click);
             // 
             // bRectangle
             // 
@@ -181,13 +188,6 @@
             this.timer1.Interval = 10;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // button1
-            // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
@@ -228,7 +228,7 @@
         private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem englishToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem русскийToolStripMenuItem;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bClear;
     }
 }
 
