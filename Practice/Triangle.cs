@@ -18,6 +18,9 @@ namespace Practice
         private Point b;
         private Point c;
 
+        [NonSerialized]
+        object locker = new object();
+
         public Point[] Points = new Point[3];
         [NonSerialized]
         Pen pen;
@@ -49,7 +52,7 @@ namespace Practice
                 width = value;
             }
         }
-        
+
         public Point A
         {
             get
@@ -62,7 +65,7 @@ namespace Practice
                 a = value;
             }
         }
-        
+
         public Point B
         {
             get
@@ -75,7 +78,7 @@ namespace Practice
                 b = value;
             }
         }
-        
+
         public Point C
         {
             get
@@ -91,70 +94,82 @@ namespace Practice
 
         public Triangle(int xMax, int yMax)
         {
-            Color = MyRandom.GetRandomColor();
-            Height = MyRandom.GetRandomPoint(25, 100);
-            Width = MyRandom.GetRandomPoint(25, 100);
-            X = MyRandom.GetRandomPoint(Width/2, xMax - Width);
-            Y = MyRandom.GetRandomPoint(yMax - Height);
-            Dx = MyRandom.GetRandomSpeed();
-            Dy = MyRandom.GetRandomSpeed();
+            lock (locker)
+            {
+                Color = MyRandom.GetRandomColor();
+                Height = MyRandom.GetRandomPoint(25, 100);
+                Width = MyRandom.GetRandomPoint(25, 100);
+                X = MyRandom.GetRandomPoint(Width / 2, xMax - Width);
+                Y = MyRandom.GetRandomPoint(yMax - Height);
+                Dx = MyRandom.GetRandomSpeed();
+                Dy = MyRandom.GetRandomSpeed();
+            }
         }
 
         public Triangle() { }
 
         public override void Draw(Graphics g)
         {
-            pen = new Pen(Color, 3);
-            A = new Point(X, Y);
-            B = new Point(X - (Width / 2), Y + Height);
-            C = new Point(X + (Width / 2), Y + Height);
+            //lock (locker)
+            {
+                pen = new Pen(Color, 3);
+                A = new Point(X, Y);
+                B = new Point(X - (Width / 2), Y + Height);
+                C = new Point(X + (Width / 2), Y + Height);
+            }
             Points[0] = A;
             Points[1] = B;
             Points[2] = C;
             DrawTriangleLine(g, A, B);
             DrawTriangleLine(g, B, C);
             DrawTriangleLine(g, C, A);
+
         }
 
         public override void Move(int xMax, int yMax)
         {
             Validate(xMax, yMax);
             if (!this.IsMoved) return;
-            if (B.X <= 0)
+            //lock (locker)
             {
-                Dx = -Dx;
-            }
-            if (C.X >= xMax)
-            {
-                Dx = -Dx;
-            }
+                if (B.X <= 0)
+                {
+                    Dx = -Dx;
+                }
+                if (C.X >= xMax)
+                {
+                    Dx = -Dx;
+                }
 
-            if (A.Y <= 0)
-            {
-                Dy = -Dy;
-            }
+                if (A.Y <= 0)
+                {
+                    Dy = -Dy;
+                }
 
-            if (B.Y >= yMax)
-            {
-                Dy = -Dy;
-            }
-            lock (this)
-            {
+                if (B.Y >= yMax)
+                {
+                    Dy = -Dy;
+                }
+
                 X += Dx;
                 Y += Dy;
             }
+
 
         }
 
         public override void BackToPictureBox(int xMax, int yMax)
         {
-            if (Height >= yMax || Width >= yMax)
+            lock (locker)
             {
-                Height = MyRandom.GetRandomPoint(25, (int)yMax / 2);
-                Width = MyRandom.GetRandomPoint(25, (int)xMax / 2);
+                if (Height >= yMax || Width >= yMax)
+                {
+                    Height = MyRandom.GetRandomPoint(25, (int)yMax / 2);
+                    Width = MyRandom.GetRandomPoint(25, (int)xMax / 2);
+                }
+                X = MyRandom.GetRandomPoint(Width / 2, xMax - Width);
+                Y = MyRandom.GetRandomPoint(yMax - Height);
             }
-            X = MyRandom.GetRandomPoint(Width / 2, xMax - Width);
-            Y = MyRandom.GetRandomPoint(yMax - Height);
         }
 
         private void DrawTriangleLine(Graphics g, Point a, Point b)

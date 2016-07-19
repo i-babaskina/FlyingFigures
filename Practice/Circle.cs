@@ -16,6 +16,9 @@ namespace Practice
         [NonSerialized]
         Pen pen;
 
+        [NonSerialized]
+        object locker = new object();
+
         [XmlAttribute]
         public int Radius
         {
@@ -32,12 +35,15 @@ namespace Practice
 
         public Circle(int xMax, int yMax)
         {
-            Color = MyRandom.GetRandomColor();
-            Radius = MyRandom.GetRandomPoint(25, 75);
-            X = MyRandom.GetRandomPoint(25, xMax - Radius);
-            Y = MyRandom.GetRandomPoint(25, yMax - Radius);
-            Dx = MyRandom.GetRandomSpeed();
-            Dy = MyRandom.GetRandomSpeed();
+            //lock (locker)
+            {
+                Color = MyRandom.GetRandomColor();
+                Radius = MyRandom.GetRandomPoint(25, 75);
+                X = MyRandom.GetRandomPoint(Radius, xMax - Radius);
+                Y = MyRandom.GetRandomPoint(Radius, yMax - Radius);
+                Dx = MyRandom.GetRandomSpeed();
+                Dy = MyRandom.GetRandomSpeed();
+            }
 
         }
 
@@ -45,7 +51,7 @@ namespace Practice
         public override void Draw(Graphics g)
         {
             pen = new Pen(Color, 3);
-            lock(this)
+            //lock(this)
             {
                 DrawCircle(g, pen, X, Y, Radius);
             }
@@ -55,12 +61,13 @@ namespace Practice
         {
             Validate(xMax, yMax);
             if (!this.IsMoved) return;
-            if (X - Radius < Math.Abs(Dx) || X + Radius > xMax - Math.Abs(Dx))
-                Dx = -Dx;
-            if (Y - Radius < Math.Abs(Dy) || Y + Radius > yMax - Math.Abs(Dy))
-                Dy = -Dy;
-            lock(this)
+            //lock (locker)
             {
+                if (X - Radius <= 0 || X + Radius >= xMax )
+                Dx = -Dx;
+            if (Y - Radius <= 0 || Y + Radius >= yMax)
+                Dy = -Dy;
+            
                 X += Dx;
                 Y += Dy;
             }
@@ -74,9 +81,12 @@ namespace Practice
 
         public override void BackToPictureBox(int xMax, int yMax)
         {
-            if (radius > xMax / 2 || radius > yMax / 2) radius = MyRandom.GetRandomPoint(25, GetMaxRadius(xMax, yMax));
-            X = MyRandom.GetRandomPoint(25, xMax - Radius);
-            Y = MyRandom.GetRandomPoint(25, yMax - Radius);
+            lock (locker)
+            {
+                if (radius > xMax / 2 || radius > yMax / 2) radius = MyRandom.GetRandomPoint(25, GetMaxRadius(xMax, yMax));
+                X = MyRandom.GetRandomPoint(radius, xMax - Radius);
+                Y = MyRandom.GetRandomPoint(radius, yMax - Radius);
+            }
         }
 
         private static void DrawCircle(Graphics g, Pen pen,

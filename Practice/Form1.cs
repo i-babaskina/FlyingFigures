@@ -20,20 +20,24 @@ namespace Practice
     public partial class Form1 : Form
     {
         public Graphics g;
-        List<Figure> MainFigures = new List<Figure>();
+        volatile List<Figure> MainFigures = new List<Figure>();
+        static object locker = new object();
         ResourceManager LocRM = new ResourceManager("Practice.Form1", typeof(Form1).Assembly);
         CultureInfo ci = new CultureInfo("en-EN");
-        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog log = LogManager.GetLogger(typeof(Form1));
         Thread thread;
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool AllocConsole();
+        int speed = 10;
         public Form1()
         {
             InitializeComponent();
             AllocConsole();
             Console.WriteLine("cococo");
+            log4net.Config.XmlConfigurator.Configure();
             thread = new Thread(MoveFigures);
+            
             //thread.Start();
 
         }
@@ -48,6 +52,7 @@ namespace Practice
             lock (MainFigures)
             {
                 MainFigures.Add(circle);
+                circle.CrossFigures += do_Cross;
             }
             pbMain.Invalidate();
 
@@ -55,7 +60,7 @@ namespace Practice
 
         private void pbMain_Paint(object sender, PaintEventArgs e)
         {
-            //lock (MainFigures)
+            //lock (locker)
             {
                 foreach (Figure f in MainFigures)
                 {
@@ -73,7 +78,7 @@ namespace Practice
                         //f.BackToPictureBox(pbMain.Width, pbMain.Height);
                         //timer1.Start();
                         //}
-                        log.Info("Figure " + f.Id + " is out of pb at" + DateTime.Now);
+                        log.Info("Figure " + f.Id + " is out of pb at " + DateTime.Now);
                         f.BackToPictureBox(pbMain.Width, pbMain.Height);
 
                     }
@@ -84,7 +89,7 @@ namespace Practice
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            CrossChecking.CrossFigures(MainFigures, pbMain.Width, pbMain.Height);
+            CrossFigures(MainFigures, pbMain.Width, pbMain.Height);
             pbMain.Invalidate();
         }
 
@@ -110,6 +115,7 @@ namespace Practice
             lock (MainFigures)
             {
                 MainFigures.Add(triangle);
+                triangle.CrossFigures += do_Cross;
             }
             pbMain.Invalidate();
 
@@ -125,6 +131,7 @@ namespace Practice
             lock (MainFigures)
             {
                 MainFigures.Add(rectangle);
+                rectangle.CrossFigures += do_Cross;
             }
             pbMain.Invalidate();
         }
@@ -157,6 +164,7 @@ namespace Practice
         }
         private void englishToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //TODO Исправить замену контролов в меню
             LocalizeTreeView("en-EN");
             ci = new CultureInfo("en-EN");
 
@@ -230,27 +238,28 @@ namespace Practice
             {
                 lock (MainFigures)
                 {
-                    foreach (Figure f in MainFigures)
+                    Thread.Sleep(speed);
+                    foreach (Figure f in MainFigures.ToArray<Figure>())
                     {
-                        //lock (f) 
+                        if (f != null)
                         {
-                            //try
-                            //{
-                            //    f.Move(pbMain.Width, pbMain.Height);
-                            //}
-                            //catch (FigureOutOfPictureBoxException ex)
-                            //{
-                            //    //timer1.Stop();
-                            //    //DialogResult result = MessageBox.Show(ex.Message);
-                            //    //if (result == DialogResult.OK)
-                            //    //{
-                            //    //f.BackToPictureBox(pbMain.Width, pbMain.Height);
-                            //    //timer1.Start();
-                            //    //}
-                            //    log.Info("Figure " + f.Id + " is out of pb at" + DateTime.Now);
-                            //    f.BackToPictureBox(pbMain.Width, pbMain.Height);
+                            try
+                            {
+                                f.Move(pbMain.Width, pbMain.Height);
+                            }
+                            catch (FigureOutOfPictureBoxException ex)
+                            {
+                                //timer1.Stop();
+                                //DialogResult result = MessageBox.Show(ex.Message);
+                                //if (result == DialogResult.OK)
+                                //{
+                                //    f.BackToPictureBox(pbMain.Width, pbMain.Height);
+                                //    timer1.Start();
+                                //    //}
+                                    log.Info("Figure " + f.Id + " is out of pb at" + DateTime.Now);
+                                    f.BackToPictureBox(pbMain.Width, pbMain.Height);
 
-                            //}
+                                }
                         }
                     }
                 }
@@ -265,6 +274,28 @@ namespace Practice
         private void button1_Click(object sender, EventArgs e)
         {
             MainFigures.Clear();
+        }
+
+        public void do_Cross(object sender, CrossFiguresEventArgs e)
+        {
+            Console.WriteLine("{0} at time {1}", e.Print(), DateTime.Now);
+        }
+
+        public static void CrossFigures(List<Figure> figures, int xMAx, int yMax)
+        {
+            if (figures.Count > 1)
+            {
+                foreach (Figure f1 in figures)
+                {
+                    foreach (Figure f2 in figures)
+                    {
+                        if (f1.Equals(f2)) continue;
+                        if (CrossChecking.CrossByType(f1, f2, xMAx, yMax))
+                            f1.DoCrossFigures(f1, f2);
+                            
+                    }
+                }
+            }
         }
     }
 }

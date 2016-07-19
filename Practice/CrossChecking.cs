@@ -51,20 +51,7 @@ namespace Practice
             return res;
         }
 
-        public static void CrossFigures(List<Figure> figures, int xMAx, int yMax)
-        {
-            if (figures.Count > 1)
-            {
-                foreach (Figure f1 in figures)
-                {
-                    foreach (Figure f2 in figures)
-                    {
-                        if (f1.Equals(f2)) continue;
-                        CrossByType(f1, f2, xMAx, yMax);
-                    }
-                }
-            }
-        }
+
 
 
         public static bool CheckCrossing(Circle circle, Triangle triangle, int xMAx, int yMax)
@@ -74,12 +61,18 @@ namespace Practice
             foreach (LineEquation l in le)
             {
                 if (IsPointInCircle(l.P1, circle) || IsPointInCircle(l.P2, circle))
+                {
                     res = true;
+                    break;
+                }
                 int d = DistanceToPoint(l, new Point(circle.X, circle.Y));
                 Point p = GetCrossPoitBetwenLineAndPoint(l, new Point(circle.X, circle.Y));
                 bool isOnSegment = IsPointOnSegment(l.P1, l.P2, p);
                 if (IsCrossLineCircle(d, circle.Radius) && isOnSegment)
+                {
                     res = true;
+                    break;
+                }
             }
             if (res)
             {
@@ -88,11 +81,12 @@ namespace Practice
                 {
                     Crossing crossing = new Crossing(circle, triangle);
                     CrossList.Add(crossing);
-                    Console.Beep();
+                    return true;
+                    //Console.Beep();
                 }
                 
             }
-            return res;
+            return false;
         }
 
 
@@ -124,10 +118,11 @@ namespace Practice
                 {
                     Crossing crossing = new Crossing(circle, rectangle);
                     CrossList.Add(crossing);
-                    Console.Beep();
+                    return true;
+                    //Console.Beep();
                 }
             }
-            return res;
+            return false;
         }
         public static bool CheckCrossing(Circle circle1, Circle circle2, int xMAx, int yMax)
         {
@@ -143,10 +138,11 @@ namespace Practice
                 {
                     Crossing crossing = new Crossing(circle1, circle2);
                     CrossList.Add(crossing);
-                    Console.Beep();
+                    return true;
+                    //Console.Beep();
                 }
             }
-            return res;
+            return false;
         }
         public static bool CheckCrossing(Triangle triangle, Rectangle rectangle, int xMAx, int yMax)
         {
@@ -154,18 +150,10 @@ namespace Practice
             if (!IsPointInRectangle(rectangle, triangle.A) && !(IsPointInRectangle(rectangle, triangle.B)) && !(IsPointInRectangle(rectangle, triangle.C)))
             {
                 LineEquation[] le1 = GetLineEqualtions(triangle);
-                //LineEquation[] le2 = new LineEquation[4];
-                //le2[0] = GetLineEquation(rectangle.Points[0], rectangle.Points[1]);
-                //le2[1] = GetLineEquation(rectangle.Points[1], rectangle.Points[2]);
-                //le2[2] = GetLineEquation(rectangle.Points[2], rectangle.Points[3]);
-                //le2[3] = GetLineEquation(rectangle.Points[3], rectangle.Points[0]);
                 foreach (LineEquation l1 in le1)
                 {
                     foreach (Point p in rectangle.Points)
                     {
-                        //Point p = GetLinesCrossPoint(l1, l2); //return false when rectangle in triangle and triangle isnt in rectangle
-                        //if (IsPointOnSegment(l1.P1, l1.P2, p) && IsPointOnSegment(l2.P1, l2.P2, p))
-                        //    res = true;
                         if (IsPointOnLine(l1, p))
                         {
                             int isInList = CrossList.FindIndex(x => x.figure1 == triangle && x.figure2 == rectangle && (x.datetime.Second >= DateTime.Now.Second - 2) && (x.datetime.Minute == DateTime.Now.Minute));
@@ -173,9 +161,10 @@ namespace Practice
                             {
                                 Crossing crossing = new Crossing(triangle, rectangle);
                                 CrossList.Add(crossing);
-                                Console.Beep();
+                                return true;
+                                //Console.Beep();
                             }
-                            return res;
+                            return false;
                         }
                     }
                 }
@@ -187,9 +176,9 @@ namespace Practice
                 {
                     Crossing crossing = new Crossing(triangle, rectangle);
                     CrossList.Add(crossing);
-                    Console.Beep();
+                    return true;
+                    //Console.Beep();
                 }
-                return true;
             }
             
             if (res)
@@ -199,10 +188,11 @@ namespace Practice
                 {
                     Crossing crossing = new Crossing(triangle, rectangle);
                     CrossList.Add(crossing);
-                    Console.Beep();
+                    return true;
+                    //Console.Beep();
                 }
             }
-            return res;
+            return false;
         }
         public static bool CheckCrossing(Triangle triangle1, Triangle triangle2, int xMAx, int yMax)
         {
@@ -228,10 +218,10 @@ namespace Practice
                 {
                     Crossing crossing = new Crossing(triangle1, triangle2);
                     CrossList.Add(crossing);
-                    Console.Beep();
+                    return true;
                 }
             }
-            return res;
+            return false;
         }
 
         public static LineEquation[] GetLineEqualtions(Triangle triangle)
@@ -253,10 +243,11 @@ namespace Practice
                 {
                     Crossing crossing = new Crossing(rectangle1, rectangle2);
                     CrossList.Add(crossing);
-                    Console.Beep();
+                    return true;
+                    //Console.Beep();
                 }
             }
-            return res;
+            return false;
         }
 
         public static bool CheckCrossing(Rectangle rectangle, Triangle triangle, int xMAx, int yMax)
@@ -398,13 +389,18 @@ namespace Practice
                     return new Point(-1000, -1000);
 
             }
+            
             else
             {
-                int temp = ((le2.A + ((le1.A * le2.B) / le1.B)));
-                if (temp != 0)
+                if (le1.B == 0) ;
+                else
                 {
-                    x = (int)(((le1.C * le2.B) / le1.B - le2.C) / temp);
-                    y = (int)(-1 * (le1.A * x + le1.C) / le1.B);
+                    int temp = ((le2.A + ((le1.A * le2.B) / le1.B)));
+                    if (temp != 0)
+                    {
+                        x = (int)(((le1.C * le2.B) / le1.B - le2.C) / temp);
+                        y = (int)(-1 * (le1.A * x + le1.C) / le1.B);
+                    }
                 }
                 
             }
@@ -423,6 +419,8 @@ namespace Practice
             }
             return false;
         }
+
+
 
     }
 }

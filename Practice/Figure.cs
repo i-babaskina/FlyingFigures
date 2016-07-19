@@ -16,13 +16,16 @@ namespace Practice
     [Serializable]
     public abstract class Figure : IDrawable, IMovable
     {
-        private int x;
-        private int y;
+        private volatile int x;
+        private volatile int y;
         private int dx;
         private int dy;
         private Color color;
         private int id;
         private bool isMoved = true;
+        
+        public event EventHandler<CrossFiguresEventArgs> CrossFigures;
+
 
         [XmlAttribute]
         public int X
@@ -165,6 +168,18 @@ namespace Practice
         public virtual void ChangeDirection()
         {
 
+        }
+
+        protected virtual void OnCrossFigures(CrossFiguresEventArgs e)
+        {
+            EventHandler<CrossFiguresEventArgs> temp = Volatile.Read(ref CrossFigures);
+            if (temp != null) temp(this, e);
+        }
+
+        public void DoCrossFigures(Figure figure1, Figure figure2)
+        {
+            CrossFiguresEventArgs e = new CrossFiguresEventArgs(figure1, figure2);
+            OnCrossFigures(e);
         }
 
     }

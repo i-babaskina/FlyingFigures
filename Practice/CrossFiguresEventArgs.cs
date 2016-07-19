@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace Practice
 {
-    class CrossFiguresEventArgs: EventArgs
+    public class CrossFiguresEventArgs: EventArgs
     {
-        private readonly int figure1, figure2;
-        private readonly Point crossPoint;
+        private readonly Figure figure1, figure2;
 
-        public int Figure1
+        public Figure Figure1
         {
             get
             {
@@ -20,7 +19,7 @@ namespace Practice
             }
         }
 
-        public int Figure2
+        public Figure Figure2
         {
             get
             {
@@ -28,19 +27,16 @@ namespace Practice
             }
         }
 
-        public Point CrossPoint
-        {
-            get
-            {
-                return crossPoint;
-            }
-        }
 
-        public CrossFiguresEventArgs(int figure1, int figure2, Point point)
+        public CrossFiguresEventArgs(Figure figure1, Figure figure2)
         {
             this.figure1 = figure1;
             this.figure2 = figure2;
-            crossPoint = point;
+        }
+
+        public string Print()
+        {
+            return string.Format("Crossing betwen {0} {1} and {2} {3}", this.figure1.GetType().Name, this.figure1.Id, this.figure2.GetType().Name, this.figure2.Id);
         }
 
 
