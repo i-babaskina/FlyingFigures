@@ -24,7 +24,7 @@ namespace Practice
         static object locker = new object();
         ResourceManager LocRM = new ResourceManager("Practice.Form1", typeof(Form1).Assembly);
         CultureInfo ci = new CultureInfo("en-EN");
-        private readonly ILog log = LogManager.GetLogger(typeof(Form1));
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         Thread thread;
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -78,7 +78,9 @@ namespace Practice
                         //f.BackToPictureBox(pbMain.Width, pbMain.Height);
                         //timer1.Start();
                         //}
-                        log.Info("Figure " + f.Id + " is out of pb at " + DateTime.Now);
+                        string str = "Figure " + f.Id + " is out of pb at " + DateTime.Now;
+                        log.Info(str);
+                        log.Error("", ex);
                         f.BackToPictureBox(pbMain.Width, pbMain.Height);
 
                     }

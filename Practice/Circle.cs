@@ -81,7 +81,7 @@ namespace Practice
 
         public override void BackToPictureBox(int xMax, int yMax)
         {
-            lock (locker)
+            //lock (locker)
             {
                 if (radius > xMax / 2 || radius > yMax / 2) radius = MyRandom.GetRandomPoint(25, GetMaxRadius(xMax, yMax));
                 X = MyRandom.GetRandomPoint(radius, xMax - Radius);
